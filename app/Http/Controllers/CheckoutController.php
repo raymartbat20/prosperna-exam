@@ -29,7 +29,7 @@ class CheckoutController extends Controller
      */
     public function checkout(Request $request)
     {
-        $data['product'] = Product::first();
+        $data['product'] = $request->product;
 
         return view('checkout.index',$data);
     }
@@ -43,7 +43,7 @@ class CheckoutController extends Controller
      */
     public function handlePayment(PaymentRequest $request)
     {
-        $product = Product::first();
+        $product = $request->product;
         $this->paypal->setPayer();
         $item1 = $this->paypal->setNewItem($product->name,$product->price,rand(000000,999999));
         $this->paypal->setItemList(array($item1));
