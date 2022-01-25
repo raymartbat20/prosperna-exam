@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/','ProductController@index')->name('product.index');
+
+Route::prefix('checkout')->name('checkout.')->group(function(){
+    Route::middleware('checkout')->group(function(){
+        Route::get('product/{product:slug}','CheckoutController@checkout')->name('index');
+        Route::post('product/{product:slug}', 'CheckoutController@handlePayment')->name('make.payment');
+    });
+    Route::get('cancel-payment', 'CheckoutController@paymentCancel')->name('cancel.payment');
+    Route::get('payment-success', 'CheckoutController@paymentSuccess')->name('success.payment');
 });
